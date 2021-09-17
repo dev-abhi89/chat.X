@@ -30,7 +30,8 @@ class _BodyChatState extends State<BodyChat> {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     Map dat = snapshot.data!.docs[index].data() as Map;
-                    return Messagebox(size: size, data: dat);
+                    return Biuble(data: dat);
+                      //Messagebox(size: size, data: dat);
                   });
             } else {
               return Container();
@@ -48,12 +49,15 @@ class Messagebox extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     bool send = ( data['sendby']==FirebaseAuth.instance.currentUser!.displayName);
-    return Row(
+    return Column(
       mainAxisAlignment: send? MainAxisAlignment.end:MainAxisAlignment.start
-      ,children:[ Flexible(
+      ,children:[ Container(
+      constraints: BoxConstraints(
+        maxWidth: size.width*0.6
+      ),
         child: Container(
           alignment:send? Alignment.centerRight:Alignment.centerLeft,
-          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
           padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
@@ -68,4 +72,44 @@ class Messagebox extends StatelessWidget {
     );
   }
 }
+class Biuble extends StatelessWidget {
+  const Biuble({Key? key,required this.data}) : super(key: key);
+  final  Map<dynamic ,dynamic> data;
+
+  @override
+  Widget build(BuildContext context) {
+    bool send = ( data['sendby']==FirebaseAuth.instance.currentUser!.displayName);
+
+    return Column(
+      children: <Widget>[
+    Container(
+    alignment:send? Alignment.topRight:Alignment.topLeft,
+      child: Container(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.80,
+        ),
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        decoration: BoxDecoration(
+          color: send?kPrimaryColor:Color(0xffffffff),
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+            ),
+          ],
+        ),
+        child: Text(
+          data['message'],
+          style: TextStyle(
+            color:send? Colors.white:kPrimaryColor,
+          ),
+        ),
+      ),
+    )]);
+  }
+}
+
 

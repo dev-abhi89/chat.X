@@ -91,7 +91,7 @@ TextEditingController _message =TextEditingController();
         child: Row(
           children: [
             Container(
-              width: size.width * 0.8,
+              width: size.width *0.8,
               padding: EdgeInsets.only(left: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
