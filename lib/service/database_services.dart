@@ -49,12 +49,14 @@ class DatabaseService {
     }
   }
   void onMessageSend(String msg,String id) async{
-  await  _dbauth.collection('chatroom').doc(id).collection('chats').add({
-      'sendby': _authbase.currentUser!.displayName,
-      'message': msg,
-      'time':FieldValue.serverTimestamp()
-
-    });
+  if (msg.isNotEmpty) {
+    await  _dbauth.collection('chatroom').doc(id).collection('chats').add({
+        'sendby': _authbase.currentUser!.displayName,
+        'message': msg,
+        'time':FieldValue.serverTimestamp()
+    
+      });
+  }
   }
   
 
