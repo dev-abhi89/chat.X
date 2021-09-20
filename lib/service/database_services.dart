@@ -10,7 +10,7 @@ class DatabaseService {
   FirebaseAuth _authbase = FirebaseAuth.instance;
 
 
-  Future setdata(String name, String email,
+  Future setdata(String name, String email,String uid,
       {String status = "unavailable"}) async {
     if (FirebaseAuth.instance.currentUser != null) {
       try {
@@ -20,6 +20,7 @@ class DatabaseService {
               'name': name,
               'email': email,
               'status': status,
+              'uid': uid
             }
         );
       } catch (e) {
@@ -57,6 +58,24 @@ class DatabaseService {
     
       });
   }
+  }
+
+  void addFriend(String uid, String name) async{
+    if(uid.length>5){
+      await _dbauth.collection('users').doc(_authbase.currentUser!.uid).collection('friends').doc(uid).set({
+    'name':name
+  });
+
+    }
+  }
+
+  void changeStatus(String status) async{
+    if(status.length>4){
+      print("ccccaaaallliinnngggg");
+      await _dbauth.collection('users').doc(_authbase.currentUser!.uid).update({
+        'status':status
+      });
+    }
   }
   
 

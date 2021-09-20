@@ -15,7 +15,26 @@ class HomeData extends StatefulWidget {
   State<HomeData> createState() => _HomeDataState();
 }
 
-class _HomeDataState extends State<HomeData> {
+class _HomeDataState extends State<HomeData> with WidgetsBindingObserver{
+
+
+  @override
+  void initState(){
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+    DatabaseService().changeStatus("online");
+  }
+
+  @override
+  void didChangeAppLifecycleState( AppLifecycleState state){
+    if(state==AppLifecycleState.resumed){
+      DatabaseService().changeStatus("online");
+    }else{
+      DatabaseService().changeStatus("Offline");
+    }
+  }
+
+
   String email = '';
 
   Map<String, dynamic> rst = {};
@@ -102,7 +121,7 @@ class _HomeDataState extends State<HomeData> {
           rst.isNotEmpty
               ? SearchTile(rst: rst,onclick: (){
                 Navigator.push(context,MaterialPageRoute(builder: (context){
-                  String roomid = userId(FirebaseAuth.instance.currentUser!.displayName, rst['name']);
+                  String roomid = userId(FirebaseAuth.instance.currentUser!.uid, rst['uid']);
                  return ChatScreen(roomID: roomid,usermp: rst);
           }));},)
               : SizedBox(
@@ -125,45 +144,51 @@ class SearchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(width: 1, color: kPrimaryColor)),
-        child: InkWell(
-          splashColor: kPrimaryColor,
-          hoverColor: kPrimaryLowColor,
-          onTap: () => {onclick()},
-          child: ListTile(
-            title: Text(
-              rst['name'],
-              style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF7310EA)),
-            ),
-            subtitle: Text(
-              rst['email'],
-              style: GoogleFonts.inter(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF68577B)),
-            ),
-            leading: Icon(
-              Icons.person,
-              size: 40,
-              color: kPrimaryColor,
-            ),
-            trailing: GestureDetector(
-              onTap: () {},
-              child: Icon(
-                Icons.chat,
-                color: kPrimaryColor,
-                size: 40,
+    return Column(
+      children: [
+        ElevatedButton(onPressed: (){DatabaseService().addFriend(rst['uid'], rst['name']);}, child: Text("testing"))
+        ,Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(width: 1, color: kPrimaryColor)),
+
+            child: InkWell(
+              splashColor: kPrimaryColor,
+              hoverColor: kPrimaryLowColor,
+              onTap: () => {onclick()},
+              child: ListTile(
+                title: Text(
+                  rst['name'],
+                  style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF7310EA)),
+                ),
+                subtitle: Text(
+                  rst['email'],
+                  style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF68577B)),
+                ),
+                leading: Icon(
+                  Icons.person,
+                  size: 40,
+                  color: kPrimaryColor,
+                ),
+                trailing: GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.chat,
+                    color: kPrimaryColor,
+                    size: 40,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      );
+      ],
+    );
   }
 }

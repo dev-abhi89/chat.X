@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterchat/constrain.dart';
@@ -72,12 +73,17 @@ class _ChatScreenState extends State<ChatScreen> {
                           SizedBox(
                             height: 3,
                           ),
-                          Text(
-                            "online",
-                            style: GoogleFonts.kufam(
-                                fontSize: 16,
-                                color: Color(0xFF81E87C),
-                                fontWeight: FontWeight.w500),
+                          StreamBuilder(
+                            stream: FirebaseFirestore.instance.collection('users').doc(widget.usermp['uid']).snapshots()
+                            ,builder: (context ,AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              return Text(
+                                snapshot.data!['status'],
+                                style: GoogleFonts.kufam(
+                                    fontSize: 16,
+                                    color: Color(0xFF81E87C),
+                                    fontWeight: FontWeight.w500),
+                              );
+                            }
                           )
                         ]),
                   ],

@@ -21,31 +21,6 @@ class BodyChat extends StatefulWidget {
 class _BodyChatState extends State<BodyChat> {
   ScrollController _scrollController = new ScrollController();
   @override
-  void initState() {
-    _scrollController = ScrollController();
-    super.initState();
-  }
-  void scrollToBottom() {
-    final bottomOffset = _scrollController.position.maxScrollExtent;
-    _scrollController.animateTo(
-      bottomOffset,
-      duration: Duration(milliseconds: 1000),
-      curve: Curves.easeInOut,
-    );
-    @override
-    void dispose() {
-      _scrollController.dispose();
-      super.dispose();
-
-  }
-  }
-
-
-
-
-
-
-  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     Timer(
@@ -77,47 +52,11 @@ class _BodyChatState extends State<BodyChat> {
 
                           return Biuble(data: dat);
 
-                          //Messagebox(size: size, data: dat);
                         });
                   } else {
                     return Container();
                   }
                 }),
-        //   MessageField(size: size, message: _message,roomid: widget.roomid,)
-/*
-            Container(
-              height: size.height / 10,
-              width: size.width,
-              alignment: Alignment.center,
-              child: Container(
-                height: size.height / 12,
-                width: size.width / 1.1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: size.height / 17,
-                      width: size.width / 1.3,
-                      child: TextField(
-                        controller: _message,
-                        decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.photo),
-                            ),
-                            hintText: "Send Message",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            )),
-                      ),
-                    ),
-                    IconButton(
-                        icon: Icon(Icons.send), onPressed:(){ DatabaseService().onMessageSend(_message.text, widget.roomid);}),
-                  ],
-                ),
-              ),
-            ),
-*/
           ],
         ),
       ),

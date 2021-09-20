@@ -79,7 +79,7 @@ class _BodysignupState extends State<BodySignup>{
               error = "Enter Valid Details";
               _errorcontoller.sink.add(error);
               }else{
-                await DatabaseService().setdata(name, email);
+                await DatabaseService().setdata(name, email,user.uid);
                 Navigator.push(context, MaterialPageRoute(builder: (contect) {
                   return HomeData();
                 },),);
