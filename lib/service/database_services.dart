@@ -54,7 +54,8 @@ class DatabaseService {
     await  _dbauth.collection('chatroom').doc(id).collection('chats').add({
         'sendby': _authbase.currentUser!.displayName,
         'message': msg,
-        'time':FieldValue.serverTimestamp()
+        'type': "text"
+        ,'time':FieldValue.serverTimestamp()
     
       });
   }

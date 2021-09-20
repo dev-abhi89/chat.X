@@ -50,7 +50,17 @@ class _BodyChatState extends State<BodyChat> {
                           Map dat = snapshot.data!.docs[index].data() as Map;
 
 
-                          return Biuble(data: dat);
+                          return dat['type']=="text"? Biuble(data: dat):
+                          Container(
+                            height: size.height*0.25,
+                            width: size.width,
+                            alignment: dat['sendby'] == FirebaseAuth.instance.currentUser!.displayName?Alignment.topRight:Alignment.topLeft,
+                            child: Container(
+                              width: size.width*0.3,
+                              height: size.height*0.25,
+                              child:dat['message']!=""? Image.network(dat['message']):CircularProgressIndicator(),
+                            ),
+                          );
 
                         });
                   } else {

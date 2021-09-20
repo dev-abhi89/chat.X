@@ -8,9 +8,10 @@ class MessageField extends StatelessWidget {
     Key? key,
     required this.size,
     required this.roomid,
-    required this.message,required this.ontab
+    required this.message,required this.ontab,
+    required this.imgtab
   }) : super(key: key);
-
+  final Function imgtab;
   final Size size;
   final Function ontab;
   final String roomid;
@@ -31,7 +32,6 @@ class MessageField extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 5),decoration: BoxDecoration(
             color: kPrimaryLightColor
         ),
-
           width: size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -47,13 +47,11 @@ class MessageField extends StatelessWidget {
                   onChanged: (val) {},
                   controller: message
                   ,decoration: InputDecoration(
+
                     border: InputBorder.none,
                     hintText: "Enter Your Message",
                     fillColor: kPrimaryColor,
-                    icon: Icon(
-                      Icons.message_rounded,
-                      color: kPrimaryColor,
-                    )),
+                    icon: IconButton(onPressed:()=> imgtab(), icon: Icon(Icons.image,size:20,color: kPrimaryColor,))),
                 ),
               ),
               IconButton(

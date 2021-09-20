@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterchat/constrain.dart';
 import 'package:flutterchat/home/components/message_field.dart';
 import 'package:flutterchat/service/database_services.dart';
+import 'package:flutterchat/service/img_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'components/body_chat.dart';
@@ -100,50 +101,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
           /////////////////////////
 
-         /* bottomNavigationBar: SingleChildScrollView(
-            child Container(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      width: size.width *0.8,
-                      padding: EdgeInsets.only(left: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: Color(0xFFBCB4FC),
-                      ),
-                      child: TextField(
-                        onChanged: (val) {},
-                        controller: _message
-                        ,decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Enter Your Message",
-                            fillColor: kPrimaryColor,
-                            icon: Icon(
-                              Icons.message_rounded,
-                              color: kPrimaryColor,
-                            )),
-                      ),
-                    ),
-                   IconButton(
-                        highlightColor: kPrimaryLowColor,
-                        onPressed: ()async {
-                          DatabaseService().onMessageSend(_message.text, widget.roomID);
-                          _message.clear();
-                        },
-                        icon: Icon(
-                          Icons.send_rounded,
-                          color: kPrimaryColor,
-                          size: size.width*0.1,
-                        ),
 
-                      ),
-
-                  ],
-                ),
-              ),
-            ),*/
-bottomNavigationBar: MessageField(roomid: widget.roomID,size: size,message:message,ontab: () async{
+bottomNavigationBar: MessageField(roomid: widget.roomID,size: size,message:message,imgtab:(){ImageService().imgPick(widget.roomID);},ontab: () async{
   DatabaseService().onMessageSend(message.text, widget.roomID);
   message.clear();
 }),
