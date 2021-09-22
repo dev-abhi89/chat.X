@@ -9,8 +9,8 @@ but that's not all there is many features absolutly free  which cost much when y
 
 - Randomizer - interact with new peoples anonymously ![](https://img.shields.io/badge/-working-yellow)
 
-- friends Zone -- make them friend to held more conversation  ![](https://img.shields.io/badge/-testing-green)
-- cloud imaging - unlike whatsaap there is no storage cumsumption  ![](https://img.shields.io/badge/-working-yellow)
+- friends Zone -- make them friend to held more conversation  ![](https://img.shields.io/badge/-Done-brightgreen))
+- cloud imaging - unlike whatsaap there is no storage cumsumption  ![](https://img.shields.io/badge/-Done-brightgreen))
 - global search - by the email you can find any user in a sec  ![](https://img.shields.io/badge/-Done-brightgreen)
 - cloud database -- there is no data loss in uninstalling/reinstalling  ![](https://img.shields.io/badge/-Done-brightgreen)
  
