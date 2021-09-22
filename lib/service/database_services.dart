@@ -20,7 +20,11 @@ class DatabaseService {
               'name': name,
               'email': email,
               'status': status,
-              'uid': uid
+              'uid': uid,
+              'profile': "",
+              'profession': "",
+              'gender':"",
+              'number':""
             }
         );
       } catch (e) {
