@@ -50,7 +50,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                 if (professionControler.text == "")
                   professionControler.text = snapshot.data!.get('profession');
                 if (numberControler.text == "")
-                  numberControler.text = snapshot.data!.get('number');
+                  numberControler.text = snapshot.data!.get('number').toString();
                 gender = snapshot.data!.get('gender');
                 // Map<dynamic,dynamic> data= snapshot.data as Map;
                 return ListView(
@@ -125,6 +125,11 @@ class _ChangeProfileState extends State<ChangeProfile> {
                           ProfileInput(
                             hintText: "Enter your name",
                             labelTxt: "Name",
+                            Validator: (val) => val!.isEmpty
+                                ? "enter valid Name"
+                                : val.length < 3
+                                ? "Must be more then 3 character"
+                                : null,
                             txtcontroler: nameControler,
                           ),
                           SizedBox(
@@ -133,14 +138,24 @@ class _ChangeProfileState extends State<ChangeProfile> {
                           ProfileInput(
                             hintText: "Enter your Profession",
                             labelTxt: "Profession",
+                            Validator: (val) => val!.isEmpty
+                                ? "enter valid Profession"
+                                : val.length < 3
+                                ? " must be more then 3 character"
+                                : null,
                             txtcontroler: professionControler,
                           ),
                           SizedBox(
                             height: size.height * 0.03,
                           ),
                           ProfileInput(
-                            hintText: "Enter your Number",
+                            hintText: "Hit - to unlock Number field",
                             labelTxt: "Number",
+                            Validator: (val) => val.length!=10
+                                ? "Number must have 10 digit"
+                                : val.length >10
+                                ? "Only 10 digits "
+                                : null,
                             txtcontroler: numberControler,
                             keyboardTYP: TextInputType.phone,
                           ),
@@ -148,7 +163,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                             height: size.height * 0.03,
                           ),
                           DropdownButtonFormField(
-                            value: gender,
+                            value: gender==""? "select gender":gender,
                             onChanged: (val) {
                               gender = val.toString();
                             },
@@ -161,7 +176,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500),
                             ),
-                            items: {"Male", "Female"}.map((e) {
+                            items: {"select gender","Male", "Female"}.map((e) {
                               return DropdownMenuItem(
                                 child: Text(e),
                                 value: e,
@@ -213,10 +228,11 @@ class ProfileInput extends StatelessWidget {
       required this.labelTxt,
       required this.hintText,
       required this.txtcontroler,
-      this.keyboardTYP = TextInputType.text})
+      this.keyboardTYP = TextInputType.text,required this.Validator})
       : super(key: key);
   final String labelTxt;
   TextEditingController txtcontroler;
+ final Function Validator;
   final String hintText;
   TextInputType keyboardTYP;
   @override
@@ -224,11 +240,7 @@ class ProfileInput extends StatelessWidget {
     return TextFormField(
       keyboardType: keyboardTYP,
       controller: txtcontroler,
-      validator: (val) => val!.isEmpty
-          ? "Name valid Name"
-          : val.length < 3
-              ? "Must be more then 3 character"
-              : null,
+      validator: (val){return Validator(val);},
       decoration: InputDecoration(
         labelText: labelTxt,
         hintText: hintText,

@@ -54,9 +54,18 @@ class _BodyChatState extends State<BodyChat> {
                           Container(
                             height: size.height*0.25,
                             width: size.width,
+                            margin: EdgeInsets.only(left: 16,right: 16),
+
                             alignment: dat['sendby'] == FirebaseAuth.instance.currentUser!.displayName?Alignment.topRight:Alignment.topLeft,
                             child: Container(
-                              width: size.width*0.3,
+                              decoration: BoxDecoration(
+                                border:
+                                  Border.all(width: 4,color: kPrimaryColor),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xFFFFFFFF)
+
+                              )
+                              ,width: size.width*0.4,
                               height: size.height*0.25,
                               child:dat['message']!=""? Image.network(dat['message']):CircularProgressIndicator(),
                             ),

@@ -11,7 +11,7 @@ import 'components/body_chat.dart';
 
 class ChatScreen extends StatefulWidget {
   final String roomID;
-  final Map<String,dynamic> usermp;
+  final Map<dynamic,dynamic> usermp;
 
    ChatScreen({Key? key,required this.roomID,required this.usermp}) : super(key: key);
 
@@ -51,11 +51,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     CircleAvatar(
                       backgroundColor: kPrimaryLowColor,
                       radius: 30,
-                      child: Icon(
+                      child:widget.usermp['profile']==""? Icon(
                         Icons.person,
                         color: kPrimaryLightColor,
                         size: 40,
-                      ),
+                      ):Image.network(widget.usermp['profile'],fit: BoxFit.cover,),
                     ),
                     SizedBox(
                       width: 10,
@@ -75,15 +75,22 @@ class _ChatScreenState extends State<ChatScreen> {
                             height: 3,
                           ),
                           StreamBuilder(
-                            stream: FirebaseFirestore.instance.collection('users').doc(widget.usermp['uid']).snapshots()
-                            ,builder: (context ,AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              return Text(
+                            stream: FirebaseFirestore.instance.collection('users').doc(widget.usermp['uid']).snapshots(),
+                            builder: (context ,AsyncSnapshot<DocumentSnapshot> snapshot) {
+
+                            if(snapshot.hasData) { return Text(
                                 snapshot.data!['status'],
                                 style: GoogleFonts.kufam(
                                     fontSize: 16,
                                     color: Color(0xFF81E87C),
                                     fontWeight: FontWeight.w500),
                               );
+                            }else{
+                              return Text("getting", style: GoogleFonts.kufam(
+                                  fontSize: 16,
+                                  color: Color(0xFF81E87C),
+                                  fontWeight: FontWeight.w500),);
+                            }
                             }
                           )
                         ]),

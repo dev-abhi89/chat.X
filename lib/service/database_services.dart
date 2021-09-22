@@ -31,6 +31,12 @@ class DatabaseService {
       }
     }
   }
+  Future FrndList(QuerySnapshot snapshot) async{
+     return  snapshot.docs.map((doc) async {
+       Map<dynamic,dynamic> temp= await _dbauth.collection('users').doc(doc.id).get() as Map;
+     return temp;
+     }).toList();
+  }
 
 
   void updateUserData(String name, String profession, String number, String gender) async {
@@ -82,10 +88,45 @@ class DatabaseService {
   }
   }
 
+  Future FriendListFunc(List<String> ids) async{
+   List< Map<dynamic, dynamic>> Flist=[];
+   if (ids.isNotEmpty) {
+     for(int i=0;i<ids.length;i++){
+       Map<dynamic,dynamic> temp;
+     await _dbauth.collection('users').doc(ids[i]).get().then((value){
+      temp= value.data() as Map;
+      Flist.add(temp);
+     }) ;
+     
+     }
+   }
+   return Flist;
+  }
+
+  Future datafunc () async{
+
+    List<String> tem= [];
+    try {
+      tem = await _dbauth.collection('users').doc(_authbase.currentUser!.uid).collection('friends').get().then((value) {
+      return value.docs.map((e) {
+      return e.id; }).toList();
+      } );
+    } catch (e) {
+      print(e.toString());
+      return tem;
+
+    }
+
+    return tem;
+  }
+
+
+
   void addFriend(String uid, String name) async{
     if(uid.length>5){
       await _dbauth.collection('users').doc(_authbase.currentUser!.uid).collection('friends').doc(uid).set({
-    'name':name
+    'name':name,
+        'uid':uid
   });
 
     }

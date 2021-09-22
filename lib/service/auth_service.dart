@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterchat/service/database_services.dart';
 class AuthService{
  final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -16,6 +17,7 @@ class AuthService{
  }
 Future Logout() async {
   try {
+   DatabaseService().changeStatus("offline");
    await _auth.signOut();
   }catch(e){
    print(e.toString());
