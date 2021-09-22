@@ -9,7 +9,6 @@ class DatabaseService {
   FirebaseFirestore _dbauth = FirebaseFirestore.instance;
   FirebaseAuth _authbase = FirebaseAuth.instance;
 
-
   Future setdata(String name, String email,String uid,
       {String status = "unavailable"}) async {
     if (FirebaseAuth.instance.currentUser != null) {
@@ -31,6 +30,24 @@ class DatabaseService {
         print(e.toString());
       }
     }
+  }
+
+
+  void updateUserData(String name, String profession, String number, String gender) async {
+    try{
+      await _authbase.currentUser!.updateDisplayName(name);
+      await _dbauth.collection('users').doc(_authbase.currentUser!.uid).update(
+          {
+            'name': name,
+            'profession': profession,
+            'gender':gender,
+            'number':number
+          });
+
+    }catch(e){
+      print(e.toString());
+    }
+
   }
 
 
