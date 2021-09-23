@@ -19,7 +19,7 @@ class Body extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Welcome To EEEDU",
+            "Welcome To BARFI",
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -27,8 +27,8 @@ class Body extends StatelessWidget {
             ),
           ),
           SizedBox(height: size.height * 0.04),
-          SvgPicture.asset(
-            'assets/icons/chat.svg',
+          Image.asset(
+            'assets/images/dog_chat.jpg',
             height: size.height * 0.45,
           ),
           SizedBox(height: size.height * 0.04),

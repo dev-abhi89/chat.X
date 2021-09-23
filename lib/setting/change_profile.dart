@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterchat/constrain.dart';
 import 'package:flutterchat/loading.dart';
 import 'package:flutterchat/service/database_services.dart';
@@ -13,15 +14,23 @@ class ChangeProfile extends StatefulWidget {
   _ChangeProfileState createState() => _ChangeProfileState();
 }
 
-final user = FirebaseAuth.instance.currentUser;
 
 class _ChangeProfileState extends State<ChangeProfile> {
   TextEditingController nameControler = TextEditingController();
   TextEditingController professionControler = TextEditingController();
   TextEditingController numberControler = TextEditingController();
+  final _formkey= GlobalKey<FormState>();
+  var user = FirebaseAuth.instance.currentUser;
+bool isloading =true;
   late String gender;
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(milliseconds: 2000),(){
+      setState(() {
+        user=FirebaseAuth.instance.currentUser;
+        isloading=false;
+      });
+    });
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryLightColor,
@@ -37,7 +46,13 @@ class _ChangeProfileState extends State<ChangeProfile> {
               ))
         ],
       ),
-      body: Container(
+      body:isloading?Container(
+        height: size.height*0.5,
+        width: size.width,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ): Container(
         child: StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('users')
@@ -118,7 +133,8 @@ class _ChangeProfileState extends State<ChangeProfile> {
                       height: size.height * 0.05,
                     ),
                     Form(
-                        child: Container(
+                      key: _formkey
+                      ,  child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Column(
                         children: [
@@ -191,11 +207,13 @@ class _ChangeProfileState extends State<ChangeProfile> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  DatabaseService().updateUserData(
-                                      nameControler.text,
-                                      professionControler.text,
-                                      numberControler.text,
-                                      gender);
+                                  if (_formkey.currentState!.validate()) {
+                                    DatabaseService().updateUserData(
+                                        nameControler.text,
+                                        professionControler.text,
+                                        numberControler.text,
+                                        gender);
+                                  }
                                 },
                                 child: Text("Save"),
                                 style: ButtonStyle(

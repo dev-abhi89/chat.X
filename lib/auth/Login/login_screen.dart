@@ -13,11 +13,22 @@ import 'components/body_login.dart';
 import 'components/login_input_decoration.dart';
 import 'components/login_text_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   String email = '';
+
   String pass = '';
+
   String error = '';
+
+ bool isloading = false;
+
   StreamController<String> _errorcontroller = StreamController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -35,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                 color: kPrimaryColor),
           ),
           SvgPicture.asset(
-            "assets/icons/login.svg",
+            "assets/icons/chat.svg",
             height: size.height * 0.35,
           ),
           LogintextField(
@@ -64,16 +75,17 @@ class LoginScreen extends StatelessWidget {
             text: "LOGIN",
             press: () async{
               if (email.length > 6 && pass.length > 6) {
-                print("1st check ::");
-                print("valusess\n em: $email  pass: $pass");
+                setState(() {
+                  isloading=true;
+                });
                 dynamic usr =await AuthService().LoginEmailPass(email, pass);
                 if (usr == null) {
-                  print("null hee");
                   error = "Enter valid Email And Password";
                   _errorcontroller.sink.add(error);
-                  print("Error ko va: $error");
+                  setState(() {
+                    isloading=false;
+                  });
                 } else {
-                  print("not null he");
                   Navigator.push(context, MaterialPageRoute(builder: (contect) {
                     return HomeData();
                   },),);
@@ -81,6 +93,9 @@ class LoginScreen extends StatelessWidget {
               }else{
                 error = "Enter valid Email And Password";
                 _errorcontroller.sink.add(error);
+                setState(() {
+                  isloading=false;
+                });
               }
             },
           ),

@@ -12,6 +12,8 @@ import 'package:flutterchat/auth/Login/login_screen.dart';
 import 'package:flutterchat/auth/Signup/components/signupbackground.dart';
 import 'package:flutterchat/auth/Welcome/components/roundedbtn.dart';
 import 'package:flutterchat/constrain.dart';
+
+import '../../../loading.dart';
 class BodySignup extends StatefulWidget {
 
   @override
@@ -26,13 +28,14 @@ class _BodysignupState extends State<BodySignup>{
   StreamController<String?> _namecontroller = StreamController<String?>();
   late String email='';
   late String password='';
+  bool isloading = false;
   @override
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     print("changess");
     return SignupBackground(child:SingleChildScrollView(
-      child: Column(
+      child: isloading? Loading():Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("SIGN UP",style: GoogleFonts.kufam(
@@ -69,25 +72,31 @@ class _BodysignupState extends State<BodySignup>{
           RoundedBtn(
             text: "SIGN UP",
             press: ()  async{
-              print("nme: $name");
-            print("eml: $email");
+
              if(email.length>5 &&password.length>6 &&  name.length>3){
-               print("sab change");
-               print(name);
+                setState(() {
+                  isloading =true;
+                });
               dynamic user = await AuthService().SignupEmailPass(email, password,name) ;
               if (user==null){
+
               error = "Enter Valid Details";
               _errorcontoller.sink.add(error);
+              setState(() {
+                isloading=false;
+              });
               }else{
                 await DatabaseService().setdata(name, email,user.uid);
                 Navigator.push(context, MaterialPageRoute(builder: (contect) {
                   return HomeData();
                 },),);
               }
-    print(email);
     }  else{
                error = "Enter Valid Details";
                _errorcontoller.sink.add(error);
+               setState(() {
+                 isloading=false;
+               });
     }          },
 
           ),

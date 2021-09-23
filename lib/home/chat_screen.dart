@@ -7,6 +7,7 @@ import 'package:flutterchat/service/database_services.dart';
 import 'package:flutterchat/service/img_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../loading.dart';
 import 'components/body_chat.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -21,12 +22,17 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   TextEditingController message =TextEditingController();
-
+bool isloading=true;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    Future.delayed(Duration(seconds: 2),(){
+      setState(() {
+        isloading=false;
+      });
+    });
     return MaterialApp(
-      home: Scaffold(
+      home:isloading?Loading() :Scaffold(
         body: Scaffold(
           backgroundColor: kPrimaryLightColor,
           appBar: AppBar(
@@ -51,11 +57,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     CircleAvatar(
                       backgroundColor: kPrimaryLowColor,
                       radius: 30,
-                      child:widget.usermp['profile']==""? Icon(
-                        Icons.person,
-                        color: kPrimaryLightColor,
-                        size: 40,
-                      ):Image.network(widget.usermp['profile'],fit: BoxFit.cover,),
+                      backgroundImage:widget.usermp['profile']==""?NetworkImage("https://firebasestorage.googleapis.com/v0/b/flutterchat-84cda.appspot.com/o/images%2F12ef37c0-1a17-11ec-8e36-b1c8c8e1ee16.jpg?alt=media&token=48c137ed-66b4-475d-b49e-8046c09d29b0") :NetworkImage(widget.usermp['profile']),
+
                     ),
                     SizedBox(
                       width: 10,

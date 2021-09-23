@@ -47,10 +47,9 @@ class ChatTile extends StatelessWidget {
                     )
                   : CircleAvatar(
                       radius: 40,
-                      child: Image.network(
-                        rst['profile'],
-                        fit: BoxFit.fill,
-                      )),
+                backgroundImage:rst['profile']==""?NetworkImage("https://firebasestorage.googleapis.com/v0/b/flutterchat-84cda.appspot.com/o/images%2F12ef37c0-1a17-11ec-8e36-b1c8c8e1ee16.jpg?alt=media&token=48c137ed-66b4-475d-b49e-8046c09d29b0") :NetworkImage(rst['profile']),
+
+              ),
               trailing: GestureDetector(
                 onTap: () {},
                 child: Icon(

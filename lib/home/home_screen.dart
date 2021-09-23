@@ -13,6 +13,7 @@ import 'package:flutterchat/service/database_services.dart';
 import 'package:flutterchat/setting/change_profile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../loading.dart';
 import 'components/chat_tile.dart';
 
 class HomeData extends StatefulWidget {
@@ -21,6 +22,8 @@ class HomeData extends StatefulWidget {
 }
 
 class _HomeDataState extends State<HomeData> with WidgetsBindingObserver {
+
+  bool isloading=true;
   @override
   void initState() {
     super.initState();
@@ -62,7 +65,11 @@ List<Map<dynamic,dynamic>>Flist=[];
   @override
   Widget build(BuildContext context) {
     gettingdta();
-
+Future.delayed(Duration(seconds: 2),(){
+  setState(() {
+    isloading =false;
+  });
+    });
     Size size = MediaQuery.of(context).size;
     /*for(dynamic i in data){
       print(i);
@@ -84,6 +91,7 @@ List<Map<dynamic,dynamic>>Flist=[];
           FlatButton.icon(
             onPressed: () {
               AuthService().Logout();
+              Navigator.popUntil(context, ModalRoute.withName("/"));
             },
             icon: Icon(
               Icons.logout_sharp,
@@ -180,11 +188,25 @@ List<Map<dynamic,dynamic>>Flist=[];
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                 ),),
-                IconButton(onPressed: (){setState(() {});}, icon: Icon(Icons.refresh,color: Colors.green,))
+                IconButton(onPressed: (){setState(() {
+                  isloading=true;
+                });
+                Future.delayed(Duration(seconds: 2),(){
+                  setState(() {
+                    isloading=false;
+                  });
+                });
+                }, icon: Icon(Icons.refresh,color: Colors.green,))
               ],
             ),
           ),
-          Container(
+        isloading?Container(
+          width: double.infinity,
+          height: size.height*0.5,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ):  Container(
             width: double.infinity,
             child:Flist.length==1?ChatTile(rst: Flist[0], onclick: (){
               Navigator.push(context,
