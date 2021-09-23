@@ -19,7 +19,7 @@ class Body extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Welcome To BARFI",
+            "Welcome To Muggle",
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w700,

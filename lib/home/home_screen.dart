@@ -80,7 +80,7 @@ Future.delayed(Duration(seconds: 2),(){
         leading: IconButton(onPressed: (){Navigator.push(context,
             MaterialPageRoute(builder: (context) => ChangeProfile()));
         }, icon: Icon(Icons.person,color: kPrimaryLightColor,size: 30,)),
-        title: Text("Barfi"),
+        title: Text("Muggle"),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
         foregroundColor: kPrimaryLightColor,
